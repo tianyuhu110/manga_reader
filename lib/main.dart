@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:manga_reader/widgets/repository_card.dart';
 
 void main() {
+  ///debugPaintSizeEnabled = true;
   runApp(const MyApp());
 }
 
@@ -19,6 +21,8 @@ class MyHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: RepositoryCard(title: "漫画",)));
+    return Scaffold(
+      body: Center(child: RepositoryCard(title: "漫画")),
+    );
   }
 }
