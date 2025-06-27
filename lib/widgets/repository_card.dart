@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manga_reader/tools/screen_util.dart';
 
 const double bigRadius = 20;
 const double smallRadius = 10;
@@ -10,7 +11,7 @@ class RepositoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = ScreenUtil.screenWidth;
     return Container(
       width: screenWidth * 0.9,
       height: screenWidth * 0.9 / 2.5,
