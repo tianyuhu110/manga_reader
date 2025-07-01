@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Chapter {
   String name;
@@ -11,18 +12,28 @@ class Chapter {
   ///Chapter:[]
 
   Future<void> scanRoute() async {
-    Directory routeDir = Directory(route);
+    ///print("正在扫描$route");
+    imgRoutes.clear();
+    final routeDir = Directory(route);
     if (!await routeDir.exists()) {
-      print("目录不存在!");
+      debugPrint("目录不存在!");
       return;
     }
-    Stream<FileSystemEntity> routeFiles = routeDir.list(recursive: false);
-    await for (FileSystemEntity file in routeFiles) {
-      if (file is File && isImageFile(file)) {
-        imgRoutes.add(file.path);
+    try {
+      List<FileSystemEntity> allEntities = await routeDir
+          .list(recursive: false)
+          .toList();
+
+      for (FileSystemEntity entity in allEntities) {
+        print("扫描路径:${entity.path}");
+        if (entity is File && isImageFile(entity)) {
+          imgRoutes.add(entity.path);
+          print("添加$entity.path");
+        }
       }
+    } catch (e) {
+      print("扫描出错$e");
     }
-    imgRoutes.sort();
   }
 
   Map<String, dynamic> toJson() {
