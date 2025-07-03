@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manga_reader/pages/setting.dart';
 import 'package:manga_reader/servers/repository.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:manga_reader/servers/repository.dart';
@@ -6,6 +7,7 @@ import 'package:manga_reader/tools/route_util.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:manga_reader/pages/homepage.dart';
 import '../widgets/drawer_menu.dart';
+
 
 
 
@@ -69,20 +71,23 @@ class _HomeScreenState extends State<HomeScreen> {
         suffixIcon: IconButton(
           icon: const Icon(Icons.settings),
           onPressed: () {
+          Navigator.push(context, 
+          MaterialPageRoute(builder: (context) => const Settingpage()));
             // 设置功能
-            showDialog(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                title: const Text('设置'),
-                content: const Text('这里可以添加阅读设置选项'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(ctx),
-                    child: const Text('确定'),
-                  )
-                ],
-              ),
-            );
+
+            // showDialog(
+            //   context: context,
+            //   builder: (ctx) => AlertDialog(
+            //     title: const Text('设置'),
+            //     content: const Text('这里可以添加阅读设置选项'),
+            //     actions: [
+            //       TextButton(
+            //         onPressed: () => Navigator.pop(ctx),
+            //         child: const Text('确定'),
+            //       )
+            //     ],
+            //   ),
+            // );
           },
         ),
         border: OutlineInputBorder(
