@@ -5,8 +5,17 @@ import 'package:manga_reader/servers/chapter.dart';
 class Comic {
   String name;
   String route;
+  String cover = '';
   List<Chapter> chapters = [];
   Comic(this.name, this.route);
+
+  void pickCover() {
+    try {
+      cover = chapters[0].imgRoutes[0];
+    } catch (e) {
+      throw ("获取封面失败：$e");
+    }
+  }
 
   Future<void> scanRoute() async {
     Directory routeDir = Directory(route);
@@ -17,16 +26,24 @@ class Comic {
     Stream<FileSystemEntity> routeFiles = routeDir.list(recursive: false);
     await for (FileSystemEntity file in routeFiles) {
       if (file is Directory) {
+        ///设置路径
         String chapterPath = file.path;
+
+        ///设置名称
         String chapterName = chapterPath.split('/').last;
+
+        ///设置章节对象
         chapters.add(Chapter(chapterName, chapterPath));
       }
     }
+
+    ///设置封面
+    pickCover();
   }
 
   ///生成自己的json
   Map<String, dynamic> toJson() {
-    return {'name': name, 'route': route, 'chapters': chapters};
+    return {'name': name, 'route': route, 'cover': cover, 'chapters': chapters};
   }
 
   ///解析一个json

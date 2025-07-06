@@ -99,4 +99,10 @@ class Repository {
     }
     throw FileSystemException('文件不存在');
   }
+
+  void addComic(Comic comic){
+    comics.add(comic);
+    thoroughScan();
+    saveToJsonFile();
+  }
 }
