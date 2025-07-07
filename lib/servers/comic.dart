@@ -10,13 +10,6 @@ class Comic {
   List<Chapter> chapters = [];
   Comic(this.name, this.route);
 
-  void pickCover() {
-    try {
-      cover = chapters[0].imgRoutes[0];
-    } catch (e) {
-      throw ("获取封面失败：$e");
-    }
-  }
 
   Future<void> scanRoute() async {
     Directory routeDir = Directory(route);
@@ -38,8 +31,7 @@ class Comic {
       }
     }
 
-    ///设置封面
-    pickCover();
+
   }
 
   ///生成自己的json
@@ -47,14 +39,7 @@ class Comic {
     return {'name': name, 'route': route, 'cover': cover, 'chapters': chapters};
   }
 
-  ///解析一个json
-  // static Comic fromJson(Map<String, dynamic> json) {
-  //   Comic comic = Comic(json['name'], json['route']);
-  //   if (json['chapters'] != null) {
-  //     comic.chapters = json['chapters'];
-  //   }
-  //   return comic;
-  // }
+
   static Comic fromJson(Map<String, dynamic> json) {
   Comic comic = Comic(json['name'], json['route']);
   if (json['chapters'] != null) {

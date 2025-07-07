@@ -9,15 +9,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:manga_reader/pages/homepage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../widgets/drawer_menu.dart';
-<<<<<<< Updated upstream
 import 'package:flutter/services.dart';
-=======
-import '../servers/comic.dart';
 import "../widgets/comic_card.dart";
-import 'package:permission_handler/permission_handler.dart';
 
 
->>>>>>> Stashed changes
+
+
 
 class HomeScreen extends StatefulWidget {
 
@@ -29,22 +26,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-<<<<<<< Updated upstream
-=======
-
-
-
->>>>>>> Stashed changes
   final TextEditingController _searchController = TextEditingController();
   late Future<List<Comic>> _comicsFuture;
-  //调用fromJson获取数据
+  
   final Repository _repository = Repository();
-  // final Repository _repository = Repository();
-// final List<Comic> comics = [
-//     Comic('Comic 1', ""),
-//     Comic('Comic 2', ""),
-//     Comic('Comic 3',"" ),
-//   ];
+
   @override
   void initState() {
     super.initState();
@@ -58,13 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _filterComics(String filter) {
-<<<<<<< Updated upstream
     setState(() {});
-=======
-    setState(() {
- 
-    });
->>>>>>> Stashed changes
   }
 
   @override
@@ -75,36 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
         title: _buildSearchField(),
       ),
       drawer: DrawerMenu(onMenuSelected: _filterComics),
-<<<<<<< Updated upstream
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          debugPrint("按下");
-          print(RouteUtil.appRoute);
-          Repository res = Repository();
-          if (await Permission.manageExternalStorage.request().isGranted) {
-            debugPrint("用户授予了权限");
-            await res.selectRoute();
-            await res.thoroughScan();
-            await res.saveToJsonFile();
-          }
-          else{
-            debugPrint("用户未授予权限");
-          }
-        },
-=======
-      // body: ListView.builder(
-      //   itemCount: comics.length,
-      //   itemBuilder: (context, index) {
-      //     return ComicCard(
-      //       comic: comics[index],
-      //       onTap: () {
-      //         // 点击事件处理
-      //         print('点击了漫画: ${comics[index].name}');
-      //       },
-      //     );
-      //   },
-      // ),
+
       body: FutureBuilder<List<Comic>>(
         future: _comicsFuture,
         builder: (context, snapshot) {
@@ -117,7 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
           }
           
           final comics = snapshot.data!;
-          return ListView.builder(
+                    return GridView.builder(
+            padding: EdgeInsets.all(8),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // 每行显示2个项目
+              childAspectRatio: 0.65, // 宽高比
+              crossAxisSpacing: 8, // 横向间距
+              mainAxisSpacing: 8, // 纵向间距
+            ),
             itemCount: comics.length,
             itemBuilder: (context, index) {
               return ComicCard(
@@ -136,13 +95,18 @@ class _HomeScreenState extends State<HomeScreen> {
       debugPrint("按下");
       print(RouteUtil.appRoute);
       Repository res = Repository();
+      if (await Permission.manageExternalStorage.request().isGranted) {
+            debugPrint("用户授予了权限");
       await res.selectRoute();
       await res.thoroughScan();
       await res.saveToJsonFile();
       _loadComics();
       }
+          else{
+            debugPrint("用户未授予权限");
+          }
+      }
       ,
->>>>>>> Stashed changes
         child: const Icon(Icons.add),
       ),
     );
@@ -169,21 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               MaterialPageRoute(builder: (context) => const Settingpage()),
             );
-            // 设置功能
 
-            // showDialog(
-            //   context: context,
-            //   builder: (ctx) => AlertDialog(
-            //     title: const Text('设置'),
-            //     content: const Text('这里可以添加阅读设置选项'),
-            //     actions: [
-            //       TextButton(
-            //         onPressed: () => Navigator.pop(ctx),
-            //         child: const Text('确定'),
-            //       )
-            //     ],
-            //   ),
-            // );
           },
         ),
         border: OutlineInputBorder(

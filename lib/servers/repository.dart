@@ -107,15 +107,7 @@ class Repository {
     }
   }
 
-  // static Repository fromJson(Map<String, dynamic> json) {
-  //   Repository repository = Repository();
-  //   repository.name = json['name'];
-  //   repository.route = json['route'];
-  //   if (json['comics'] != null) {
-  //     repository.comics = json['comics'];
-  //   }
-  //   return repository;
-  // }
+
   static Repository fromJson(Map<String, dynamic> json) {
   Repository repository = Repository();
   repository.name = json['name'];
@@ -139,14 +131,12 @@ class Repository {
     }
     throw FileSystemException('文件不存在');
   }
-<<<<<<< Updated upstream
 
   void addComic(Comic comic){
     comics.add(comic);
     thoroughScan();
     saveToJsonFile();
-=======
- 
+  }
   Future<List<Comic>> loadComics() async {
   try {
     Map<String, dynamic> json = await loadRepository(RouteUtil.repositoryName ?? '');
@@ -157,8 +147,8 @@ class Repository {
     //debug输出仓库名称
     debugPrint("仓库名称: ${RouteUtil.repositoryName}");
     return [];
->>>>>>> Stashed changes
   }
 }
-}
 
+
+}
