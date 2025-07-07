@@ -16,8 +16,8 @@ class NoGlowScrollBehavior extends ScrollBehavior {
 }
 
 void main() {
-  print("应用启动");
-  ///debugPaintSizeEnabled = true;
+  
+ 
   runApp(const MyApp());
 }
 

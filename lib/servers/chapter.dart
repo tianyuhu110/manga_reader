@@ -23,12 +23,14 @@ class Chapter {
       List<FileSystemEntity> allEntities = await routeDir
           .list(recursive: false)
           .toList();
+      debugPrint("扫描到${allEntities.length}个文件或目录");
+      
 
       for (FileSystemEntity entity in allEntities) {
-        print("扫描路径:${entity.path}");
+        debugPrint("扫描路径:${entity.path}");
         if (entity is File && isImageFile(entity)) {
           imgRoutes.add(entity.path);
-          print("添加$entity.path");
+          debugPrint("添加$entity.path");
         }
       }
     } catch (e) {
