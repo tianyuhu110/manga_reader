@@ -6,7 +6,7 @@ import 'package:manga_reader/pages/local_repository_manager.dart';
 import 'package:manga_reader/tools/screen_util.dart';
 
 import 'package:manga_reader/widgets/test_widget.dart';
-
+import 'package:manga_reader/tools/AppPreferences.dart';
 
 class NoGlowScrollBehavior extends ScrollBehavior {
   @override
@@ -15,8 +15,10 @@ class NoGlowScrollBehavior extends ScrollBehavior {
   }
 }
 
-void main() {
-  
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await RouteUtil.init();       // 初始化路径
+  await AppPreferences.init(); 
  
   runApp(const MyApp());
 }
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Builder(builder: (context) {
        ScreenUtil.init(context);
-       RouteUtil.init();
+       
         return MyHome();
       }),
       scrollBehavior: NoGlowScrollBehavior(),

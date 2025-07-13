@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manga_reader/pages/software_setting.dart';
 class Settingpage extends StatefulWidget {
   const Settingpage({super.key});
 
@@ -41,6 +42,13 @@ class _SettingpageState extends State<Settingpage> {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('软件设置'),
+            //点击跳转到软件设置界面
+            onTap: () {
+                Navigator.push(
+                 context,
+                 MaterialPageRoute(builder: (context) => SoftwareSettingPage()),
+               );
+            },
           ),
           ListTile(
             leading: Icon(Icons.privacy_tip),

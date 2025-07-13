@@ -7,7 +7,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:manga_reader/tools/route_util.dart';
 import 'package:path/path.dart' as path;
 import '../tools/route_util.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:manga_reader/tools/AppPreferences.dart';
 
 class Repository {
   String name = "";
@@ -73,11 +74,8 @@ class Repository {
 /// 再对每个章节调用`scanRoute()`（扫描章节目录下的图片）。这样整个仓库的结构就被构建出来了。
   Future<void> thoroughScan() async {
     await scanRoute();
-    //将仓库地址存在routeUtil中
-    RouteUtil.repositoryRoute = route;
-    RouteUtil.repositoryName = name;
-    debugPrint("仓库NAME:${RouteUtil.repositoryName}");
-    debugPrint("仓库地址:${RouteUtil.repositoryRoute}");
+    //将仓库名称存储到AppPreferences中
+    await AppPreferences.setRepositoryName(name); 
     debugPrint("appRoute:${RouteUtil.appRoute}");
     for (var comic in comics) {
       await comic.scanRoute();
@@ -87,6 +85,8 @@ class Repository {
     }
   }
 
+ 
+
 
 
   Future<bool> saveToJsonFile() async {
@@ -95,7 +95,7 @@ class Repository {
 
       ///这里有点问题，没有appRoute为空的判断
       File configFile = File(
-        path.join(RouteUtil.appRoute ?? '', '${name}_repository.json'),
+        path.join(RouteUtil.appRoute, '${name}_repository.json'),
       );
       await configFile.writeAsString(jsonData);
 
@@ -123,7 +123,7 @@ class Repository {
 
   static Future<Map<String, dynamic>> loadRepository(String name) async {
     final jsonFile = File(
-      path.join(RouteUtil.appRoute ?? '', '${name}_repository.json'),//$前删掉一个/
+      path.join(RouteUtil.appRoute , '${name}_repository.json'),//$前删掉一个/
     );
     if (await jsonFile.exists()) {
       String jsonString = await jsonFile.readAsString();
@@ -139,13 +139,13 @@ class Repository {
   }
   Future<List<Comic>> loadComics() async {
   try {
-    Map<String, dynamic> json = await loadRepository(RouteUtil.repositoryName ?? '');
+    Map<String, dynamic> json = await loadRepository(AppPreferences.repositoryName ?? '');
     Repository repository = Repository.fromJson(json);
     return repository.comics;
   } catch (e) {
     debugPrint("加载漫画失败: $e");
     //debug输出仓库名称
-    debugPrint("仓库名称: ${RouteUtil.repositoryName}");
+    //debugPrint("仓库名称: ${RouteUtil.repositoryName}");
     return [];
   }
 }
