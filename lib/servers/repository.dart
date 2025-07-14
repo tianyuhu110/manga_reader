@@ -16,18 +16,19 @@ class Repository {
   List<Comic> comics = [];
 
 
-  ///返回的是一个Promise对象
-  ///  这个函数用于选择仓库的根目录。它使用`FilePicker.platform.getDirectoryPath()`让用户选择一个文件夹。
-  /// 如果用户选择了文件夹（即结果不为null），则将仓库的路径（`route`）设置为该文件夹路径，并从路径中提取最
-  /// 后一个部分作为仓库的名称（`name`）。
-  Future<void> selectRoute() async {
-    String? result = await FilePicker.platform.getDirectoryPath();
-    if (result != null) {
-      route = result;
-      List<String> results = result.split("/");
-      name = results[results.length - 1];
-    }
+
+
+  //增加了对是否选择文件夹的判断
+  Future<bool> selectRoute() async {
+  String? result = await FilePicker.platform.getDirectoryPath();
+  if (result != null) {
+    route = result;
+    List<String> results = result.split("/");
+    name = results[results.length - 1];
+    return true; 
   }
+  return false; 
+}
 
   void setName(String newName) {
     name = newName;

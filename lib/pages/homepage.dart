@@ -97,10 +97,18 @@ class _HomeScreenState extends State<HomeScreen> {
       Repository res = Repository();
       if (await Permission.manageExternalStorage.request().isGranted) {
             debugPrint("用户授予了权限");
-      await res.selectRoute();
-      await res.thoroughScan();
-      await res.saveToJsonFile();
-      _loadComics();
+
+      // 检查用户是否选择了文件夹
+      bool selected = await res.selectRoute();
+      
+      // 只有用户选择了文件夹才执行后续操作
+      if (selected) {
+        await res.thoroughScan();
+        await res.saveToJsonFile();
+        _loadComics();
+      } else {
+        debugPrint("用户取消选择文件夹");
+      }
       }
           else{
             debugPrint("用户未授予权限");
@@ -113,19 +121,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSearchField() {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return TextField(
       controller: _searchController,
+
       decoration: InputDecoration(
         filled: true,
-        fillColor: Colors.white,
+        // fillColor: Colors.white,
+        fillColor: isDarkMode 
+          ? Colors.grey[800] // 黑暗模式下使用深灰色
+          : Colors.white,  
         hintText: '搜索',
+
         prefixIcon: Builder(
           // 使用 Builder 包裹
-          builder: (context) => IconButton(
+            builder: (context) => IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
+
         suffixIcon: IconButton(
           icon: const Icon(Icons.settings),
           onPressed: () {

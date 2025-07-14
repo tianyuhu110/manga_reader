@@ -1,6 +1,9 @@
 //写一个软件设置界面（由设置里的一项跳转过来的
 import 'package:flutter/material.dart';
-
+import 'package:manga_reader/tools/AppPreferences.dart';
+import 'package:manga_reader/tools/theme_provider.dart';
+import 'package:manga_reader/widgets/test_widget.dart';
+import 'package:provider/provider.dart';
 
 class SoftwareSettingPage extends StatefulWidget {
   const SoftwareSettingPage({super.key});
@@ -17,16 +20,21 @@ class _SoftwareSettingPageState extends State<SoftwareSettingPage>  {
         appBar: AppBar(
           title: Text("软件设置"),
         ),
-        body: ListView(
+
+        body: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+        return ListView(
           children: [
             _buildSectionHeader("显示设置"),
-            ListTile(
-            // leading: Icon(Icons.folder_open),
-            title: Text('主题样式'),
-            
-            
+            SwitchListTile(
+              title: const Text('夜间模式'),
+              value: themeProvider.themeMode == ThemeMode.dark,
+              onChanged: (value) {
+                themeProvider.setThemeMode(
+                  value ? ThemeMode.dark : ThemeMode.light
+                );
+              },
             ),
-            
             const Divider(height:1),
             _buildSectionHeader("漫画设置"),
             ListTile(
@@ -44,7 +52,9 @@ class _SoftwareSettingPageState extends State<SoftwareSettingPage>  {
             ),
             
           ],
-        )
+        );
+          }
+        ),
       );
     }
 

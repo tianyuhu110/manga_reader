@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:manga_reader/pages/homepage.dart';
 import 'package:manga_reader/tools/route_util.dart';
 import 'package:manga_reader/widgets/repository_card.dart';
 import 'package:manga_reader/pages/local_repository_manager.dart';
@@ -7,6 +8,8 @@ import 'package:manga_reader/tools/screen_util.dart';
 
 import 'package:manga_reader/widgets/test_widget.dart';
 import 'package:manga_reader/tools/AppPreferences.dart';
+import 'package:provider/provider.dart'; // 添加Provider
+import 'package:manga_reader/tools/theme_provider.dart'; // 添加ThemeProvide
 
 class NoGlowScrollBehavior extends ScrollBehavior {
   @override
@@ -20,7 +23,13 @@ void main() async{
   await RouteUtil.init();       // 初始化路径
   await AppPreferences.init(); 
  
-  runApp(const MyApp());
+  runApp(
+    // 使用ChangeNotifierProvider包裹整个应用
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -28,22 +37,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Builder(builder: (context) {
-       ScreenUtil.init(context);
-       
-        return MyHome();
-      }),
-      scrollBehavior: NoGlowScrollBehavior(),
+    return Builder(builder: (context) {
+      ScreenUtil.init(context);
+      final themeProvider = Provider.of<ThemeProvider>(context);
+      
+      return MaterialApp(
+        home: HomeScreen(), // 直接使用 HomeScreen
+        scrollBehavior: NoGlowScrollBehavior(),
+        themeMode: themeProvider.themeMode,
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
       );
-  }
-}
-
-class MyHome extends StatelessWidget {
-  const MyHome({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TestApp();
+    });
   }
 }
